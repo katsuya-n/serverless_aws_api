@@ -1,0 +1,15 @@
+service: knakano-serverless-api-project
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  stage: ${opt:stage}
+  runtime: python3.9
+
+functions:
+  fizz_buzz:
+    handler: handler.fizz_buzz
+    events:
+      - httpApi:
+          path: /
+          method: get
