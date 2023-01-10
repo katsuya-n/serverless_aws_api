@@ -5,11 +5,41 @@ provider:
   name: aws
   stage: ${opt:stage}
   runtime: python3.9
+  region: ap-northeast-1
+
+  apiGateway:
+    apiKeys:
+      - ${opt:stage}-knakano-api-key
+
+plugins:
+  - serverless-api-gateway-throttling
+
+custom :
+  # serverless-api-gateway-throttlingの設定
+  apiGatewayThrottling :
+    maxRequestsPerSecond : 1000
+    maxConcurrentRequests : 500
 
 functions:
-  fizz_buzz:
-    handler: handler.fizz_buzz
+  fizz_buzz_api:
+    handler: fizz_buzz.main
+    memorySize: 128
+    timeout: 20
     events:
-      - httpApi:
-          path: /
+      - http:
+          path: /fizz-buzz
           method: get
+          private: true
+          request:
+            parameters:
+              querystrings:
+                input: true
+  health_check_api:
+    handler: health_check.main
+    memorySize: 128
+    timeout: 20
+    events:
+      - http:
+          path: /health-check
+          method: get
+          private: true
