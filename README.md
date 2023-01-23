@@ -15,7 +15,7 @@ $ curl "https://{restapi_id}.execute-api.ap-northeast-1.amazonaws.com/dev/health
 ### Unit Test
 
 ```bash
-$ pip install -U pytes
+$ pip install -U pytest
 
 $ pytest
 ```
